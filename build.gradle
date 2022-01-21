@@ -6,7 +6,7 @@ plugins {
 group 'com.fujimotoakira'
 version '1.0-SNAPSHOT'
 
-mainClassName = 'com.fujimotoakira.methoderaser.MethodEraserMain'
+mainClassName = 'methodEraser.MethodEraserMain'
 
 repositories {
     mavenCentral()
