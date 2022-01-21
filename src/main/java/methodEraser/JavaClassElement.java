@@ -1,5 +1,6 @@
 package methodEraser;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,13 +13,20 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class JavaClassElement implements ClassElement {
 
     private CompilationUnit compilationUnit;
 
-    public JavaClassElement(String filename) throws IOException {
-        this.compilationUnit = createTree(filename);
+    public JavaClassElement(String inputFilename, String outputFilename) throws IOException {
+        this.compilationUnit = createTree(inputFilename);
+        final String[] pathSeparated = outputFilename.split(File.separator);
+        final String className = pathSeparated[pathSeparated.length - 1].split("\\.")[0];
+        final List types = compilationUnit.types();
+        if (types.size() != 0) {
+            ((TypeDeclaration)(types.get(0))).getName().setIdentifier(className);
+        }
     }
 
     private CompilationUnit createTree(String filename) throws IOException {
