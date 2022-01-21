@@ -22,14 +22,17 @@ public class JavaClassElement implements ClassElement {
     }
 
     private CompilationUnit createTree(String filename) throws IOException {
-        ASTParser parser = ASTParser.newParser(AST.JLS11);
+        ASTParser parser = ASTParser.newParser(AST.JLS8);
         Hashtable<String, String> options = JavaCore.getOptions();
-        options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_11);
-        options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_11);
-        options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_11);
+        options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_8);
+        options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_8);
+        options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_8);
         options.put(JavaCore.COMPILER_DOC_COMMENT_SUPPORT, JavaCore.ENABLED);
         parser.setCompilerOptions(options);
-        parser.setSource(Files.readString(Paths.get(filename)).toCharArray());
+        List<String> lines = Files.readAllLines(Paths.get(filename));
+        StringBuilder builder = new StringBuilder();
+        lines.forEach(builder::append);
+        parser.setSource(new String(builder).toCharArray());
         return (CompilationUnit) parser.createAST(new NullProgressMonitor());
     }
 
