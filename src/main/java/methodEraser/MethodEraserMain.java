@@ -41,7 +41,7 @@ public class MethodEraserMain {
     }
 
     public void run(String inputFilename, String outputFilename, String methodsFile, boolean isErase) throws IOException {
-        final ClassElement javaClassElement = new JavaClassElement(inputFilename);
+        final ClassElement javaClassElement = new JavaClassElement(inputFilename, outputFilename);
         final List<String> methods = getIgnoreMethods(methodsFile);
         if (isErase) {
             methods.forEach(javaClassElement::erase);
